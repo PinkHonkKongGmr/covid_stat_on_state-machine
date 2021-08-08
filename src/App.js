@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import StatisticView from "./feautures/molecules/StatisticView";
+import React, { createContext } from "react";
+import { useMachine } from "@xstate/react";
+import { covidMachine } from "./entities/state-machines/covid-machine";
+
+export const MachineProvider = createContext();
 
 function App() {
+  const [current, send] = useMachine(covidMachine);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MachineProvider.Provider value={{ current, send }}>
+      <div className="App">
+        <StatisticView />
+      </div>
+    </MachineProvider.Provider>
   );
 }
 
